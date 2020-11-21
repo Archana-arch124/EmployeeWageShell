@@ -3,12 +3,15 @@
 IS_PART_TIME=1
 IS_FULL_TIME=2
 EMP_RATE_PER_HRS=20
-NUM_OF_WORKING_DAYS=20
+NUM_OF_WORKING_DAYS=30
+MAX_HRS_IN_MONTH=100
+
+totalEmpHrs=0
 totalWorkingDays=0
-for ((day=1;day<=NUM_OF_WORKING_DAYS;day++))
-do
-              randomCheck=$(( RANDOM % 3 ))
-                case $randomCheck in
+
+
+function getWorkingHours(){
+                 case $1 in
                         $IS_PART_TIME)
                                 empHrs=4;
                                 ;;
@@ -18,10 +21,19 @@ do
                         *)
                                 empHrs=0;
                                 ;;
-           esac
-salary=$((empHrs*$EMP_RATE_PER_HRS))
-totalSalary=$(($totalSalary+$salary))
+                esac
+                echo "$empHrs"
+}
+while [[ $totalEmpHrs -le $MAX_HRS_IN_MONTH && $totalWorkingDays -le $NUM_OF_WORKING_DAYS ]]
+
+do
+
+         ((totalWorkingDays++))
+        empHrs=$( getWorkingHours $((RANDOM % 3)) )
+
+done
+totalSalary=$(($empHrs*$EMP_RATE_PER_HRS))
 
 echo "Employee total Salary is : $totalSalary"
-done
+
 
