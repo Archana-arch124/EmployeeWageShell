@@ -8,6 +8,7 @@ MAX_HRS_IN_MONTH=100
 
 totalEmpHrs=0
 totalWorkingDays=0
+declare -A dailyWages
 
 
 function getWorkingHours(){
@@ -24,18 +25,22 @@ function getWorkingHours(){
                 esac
                 echo "$empHrs"
 }
+function getEmpWage(){
+            empHrs=$1
+            echo $(($empHrs*$EMP_RATE_PER_HRS))
+}
+
 while [[ $totalEmpHrs -le $MAX_HRS_IN_MONTH && $totalWorkingDays -le $NUM_OF_WORKING_DAYS ]]
 
 do
 
          ((totalworkingDays++))
         empHrs=$( getWorkingHours $((RANDOM % 3)))
-
-totalEmpHrs=$(($totalEmpHrs + $empHrs))
-
+        totalEmpHrs=$(($totalEmpHrs + $empHrs))
+        dailyWages["Day"$totalWorkingDays]=$( getEmpWage $empHrs )
 done
 totalSalary=$(($totalEmpHrs*$EMP_RATE_PER_HRS))
 
 echo "Employee total Salary is : $totalSalary"
 echo "Employee total Hours is : $totalEmpHrs"
-
+echo "Employee Dailywages : ${dailyWages[@]}"
