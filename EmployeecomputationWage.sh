@@ -1,3 +1,4 @@
+Welcome to Employee Wage Computation problem
 #!/bin/bash/
 
 IS_PART_TIME=1
